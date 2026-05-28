@@ -1,0 +1,1229 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Color palette */
+:root{
+    --main-color: #214AB2;
+    --secondary-color: #2160B2;
+    --light-color: #F2F2F2;
+    --gray-color: #9d9ea0;
+    --dark-gray: #161616;
+    --border-color: #333435;
+    --border-hover: #4d4f50;
+    --dark-color: #121212;
+}
+
+html, body {
+    background-color: var(--dark-color); /* Set a fallback color for the page background */
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+
+
+
+
+/*---------------------PRE LOADER---------------------*/
+.pulsing-loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-color); /* Background color */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--main-color); /* Dot color */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+
+
+
+
+
+/*---------------------HERO---------------------*/
+
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: hidden;
+    opacity: 0; /* Start with hidden opacity */
+    transition: opacity 1s ease; /* Smooth fade effect */
+}
+
+/* Show hero when the class 'hero-visible' is added */
+.hero-visible {
+    opacity: 1; /* Fade in */
+}
+
+/* Background image */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/hero-bg.jpg') no-repeat center center/cover;
+    z-index: 1;
+    transform: scale(1.1); /* Start slightly zoomed in */
+    transition: transform 1s ease; /* Smooth transition for zoom effect */
+}
+
+/* Add the zoom-out effect when the hero is loaded */
+.hero-loaded .background-image {
+    transform: scale(1); /* Transition to original size */
+}
+
+
+/* Big text */
+.big-text {
+    font-weight: 400;
+    font-size: 13rem;
+    color: var(--light-color);
+    opacity: 0;
+    transform: translateY(300px);
+    transition: opacity 1s ease, transform 1s ease 0.5s;
+    z-index: 2;
+}
+
+/* Big Text Animation */
+.hero-loaded .big-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.big-text .part-one,
+.big-text .part-two {
+    font-family: "Questrial", sans-serif;
+    display: inline-block; /* Keep the parts on the same line by default */
+}
+
+/* General styling for the toggle button */
+.toggle-menu {
+    position: fixed; /* Position it absolutely within the hero section */
+    top: 2rem; /* Distance from the top */
+    right: 2rem; /* Distance from the right */
+    background-color: transparent; /* Make the background transparent */
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+    z-index: 1110; /* Ensure it is above other content */
+    width: 60px; /* Set width for circle */
+    height: 60px; /* Set height for circle */
+    border-radius: 50%; /* Create circle */
+    background-color: var(--main-color); /* Circle background color */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    transform: translateY(-30px); /* Start from above */
+    opacity: 0; /* Start with hidden opacity */
+    transition: transform 0.5s ease 0.5s, opacity 0.5s ease 0.5s;
+}
+
+/* Show toggle menu icon */
+.toggle-menu.visible {
+    transform: translateY(0); /* Slide down to original position */
+    opacity: 1; /* Fade in */
+}
+
+/* Icon styles */
+.toggle-menu span,
+.toggle-menu span:before {
+    background-color: var(--light-color);
+    content: "";
+    display: block;
+    height: 2px;
+    width: 26px;
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+}
+
+.toggle-menu span {
+    left: calc(50% - 13px);
+    top: calc(50% - 1px);
+}
+
+.toggle-menu span:before {
+    top: 0;
+    transform: rotate(90deg);
+}
+
+/* Active menu icon */
+.toggle-menu.active span {
+    transform: rotate(45deg);
+}
+
+.toggle-menu.active span:before {
+    transform: rotate(-90deg);
+}
+
+/* Navigation Links */
+.nav-links {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 500px;
+    height: 100vh;
+    background-color: var(--light-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space between ul and footer */
+    align-items: flex-start; /* Align to the left */
+    padding: 20px; /* Add some padding for better look */
+    transition: right 0.6s ease;
+    z-index: 9;
+}
+
+/* Show navigation */
+.nav-open {
+    right: 0;
+}
+
+/* Centering the ul */
+.nav-links ul {
+    list-style-type: none; /* Remove default bullet points */
+    margin: 0;
+    padding: 0;
+    flex-grow: 1; /* Allows the ul to take up the remaining space and center itself */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the items vertically */
+    line-height: 32px;
+}
+
+/* Align the nav links text */
+.nav-links li {
+    margin-bottom: 15px; /* Vertical spacing between each link */
+    text-align: left;
+}
+
+/* Link styles */
+.nav-links a {
+    font-size: 3rem; /* Font size for links */
+    font-weight: 500;
+    color: var(--dark-color); /* Text color */
+    text-decoration: none; /* Remove underline */
+    transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect */
+.nav-links a:hover {
+    color: var(--main-color); /* Change color on hover */
+}
+
+/* Footer should stay at the bottom */
+.nav-links footer {
+    align-self: flex-start; /* Align footer links to the left */
+    margin-bottom: 20px; /* Adds a little space between footer and bottom of nav-links */
+}
+
+/* Footer hover effect */
+.nav-links footer a {
+    font-size: 1rem; /* Adjust font size for footer links */
+    padding-right: 15px;
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.nav-links footer a:hover {
+    color: var(--secondary-color);
+}
+
+.social-title {
+    font-size: 0.9rem; /* Font size for titles */
+    font-weight: 400;
+    color: var(--gray-color); /* Text color */
+    margin-bottom: 4px; /* Space below title */
+}
+
+
+
+
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
+    opacity: 0; /* Initially hidden */
+    pointer-events: none; /* Prevent interaction with overlay */
+    transition: opacity 0.3s ease;
+    z-index: 8; /* Below the menu but above the background */
+}
+
+#overlay.active {
+    opacity: 1; /* Make overlay visible when menu is open */
+    pointer-events: all; /* Allow clicking the overlay to close the menu */
+}
+
+
+
+
+
+/*---------------------ABOUT---------------------*/
+.about-container {
+    background-color: var(--dark-gray);
+    padding: 0 2rem;
+    height: 700px; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns the text vertically at the start */
+    max-width: 1250px; /* Controls the overall width of the content */
+    width: 100%;
+    flex-wrap: wrap; /* Allows the items to wrap on smaller screens */
+}
+
+.about-left {
+    flex: 1;
+    text-align: left; /* Left-justify the "About Me" text */
+    font-size: 16px; /* Adjust font size for "About Me" */
+    font-weight: 400;
+    padding-right: 20px; /* Adds space between left and right sections */
+    color: var(--gray-color);
+}
+
+.about-right {
+    flex: 2;
+    text-align: left;
+    font-size: 25px;
+    font-weight: 300;
+    color: var(--light-color);
+    line-height: 1.6;
+}
+
+.about-right #about-content {
+    margin-bottom: 70px; /* Space between paragraphs */
+}
+
+#local-time {
+    font-size: 16px;
+    font-weight: 400;
+    color:var(--secondary-color);
+}
+
+#time {
+    margin-left: 7px;
+    font-size: 25px;
+    font-weight: 300;
+    color:var(--light-color);
+}
+
+.about-right {
+    display: inline; /* Allow the about content to flow as a single paragraph */
+}
+
+/* Fade-in with upward slide and blur animation */
+@keyframes fadeInUpWithBlur {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+        filter: blur(10px); /* Start with blur */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+        filter: blur(0); /* Remove blur */
+    }
+}
+
+/* Initial state of the about section elements */
+.about-left, .about-right {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px); /* Initial blur */
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+}
+
+/* Add animation when the section is scrolled into view */
+.about-visible .about-left, 
+.about-visible .about-right {
+    animation: fadeInUpWithBlur 1s ease forwards;
+}
+
+
+
+
+
+/*---------------------WORK---------------------*/
+
+/* Fade and blur animation */
+.fade-blur {
+    filter: blur(7px); /* Apply blur */
+    opacity: 0; /* Fade out */
+    transition: filter 0.5s ease, opacity 0.5s ease; /* Adjust timing as needed */
+}
+
+#work {
+    filter: blur(0);
+    transition: filter 0.5s ease, opacity 0.5s ease; /* Smooth transition */
+}
+
+.work-section {
+    padding: 0 2rem; /* Similar padding as the "About" section */
+    max-width: 1300px; /* Match the width of the "About" section */
+    margin: 0 auto; /* Center the entire section */
+}
+
+/* Initial state for the work section elements */
+.work-title {
+    font-family: "Questrial", sans-serif;
+    font-size: 7rem;
+    font-weight: 900;
+    color: var(--light-color);
+    letter-spacing: 0.1em;
+    text-align: left;
+    margin: 8rem 0;
+    opacity: 0; /* Start with hidden opacity */
+    transform: translateY(30px); /* Start slightly below */
+    filter: blur(10px); /* Start with blur */
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease; /* Smooth transition */
+}
+
+/* Add animation when the section is scrolled into view */
+.work-visible .work-title {
+    animation: fadeInUpWithBlur 1s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide and blur animation */
+@keyframes fadeInUpWithBlur {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+        filter: blur(10px); /* Start with blur */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+        filter: blur(0); /* Remove blur */
+    }
+}
+
+/* Card Container */
+.card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to the next row */
+    justify-content: space-between; /* Space between card containers */
+    margin-bottom: 12rem; 
+}
+
+/* Add animation when the section is scrolled into view */
+.work-visible .card-container {
+    animation: fadeInUp 1.2s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide animation */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+    }
+}
+
+/* Initial state of the about section elements */
+.card-container {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card {
+    width: 49%; /* Two cards per row */
+    height: auto;
+    border: 0.5px solid var(--border-color); /* Thin border for the card */
+    border-radius: 3px;
+    padding: 15px;
+    margin-bottom: 2rem; /* Add spacing below each card */
+    text-align: left;
+    box-sizing: border-box; /* Ensure padding and width don't exceed container size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+    position: relative; /* Make the card a positioned element so the icon can be placed inside */
+}
+
+.card:hover {
+    border: 2px solid var(--border-hover); /* Thin border for the card */
+}
+
+/* Image Container */
+.img-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.img-container img {
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 0.7rem; /* Space between image and title */
+    transition: transform 0.5s;
+}
+
+.card:hover .img-container img {
+    opacity: 0.8;
+    transform: scale(1.03); /* Slight zoom-in effect */
+}
+
+/* View Icon */
+.view-icon {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Move to the exact center */
+    font-size: 2rem; /* Adjust the size of the icon */
+    color: var(--light-color); /* Use a color that stands out */
+    opacity: 0; /* Hidden initially */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    pointer-events: none; /* Prevent the icon from interfering with hover */
+    z-index: 2; /* Ensure the icon is above both the image and overlay */
+}
+
+.card:hover .view-icon {
+    opacity: 1; /* Show the icon on hover */
+    transform: translate(-50%, -40%); /* Slight upward movement */
+}
+
+.card-title {
+    font-size: 2rem;
+    font-family: "Questrial", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--light-color);
+    transition: color 0.6s ease, color 0.6s ease;
+}
+
+#arrow-outward {
+    font-size: 1.5rem;
+}
+
+
+
+
+
+/*---------------------SERVICES---------------------*/
+
+/* General section styling */
+.services-section {
+    background-color: var(--light-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Section Title */
+.section-title {
+    font-family: "Questrial", sans-serif;
+    font-size: 7rem;
+    font-weight: 900;
+    color: var(--dark-color);
+    letter-spacing: 0.1em;
+    text-align: left; /* Align the section title to the left */
+    margin: 8rem 0;
+    padding: 0 2rem; /* Similar padding as the "About" section */
+    width: 100%; /* Full width of its container */
+    max-width: 1300px; /* Set max-width to 1300px */
+    opacity: 0; /* Start with hidden opacity */
+    transform: translateY(30px); /* Start slightly below */
+    filter: blur(10px); /* Start with blur */
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease; /* Smooth transition */
+}
+
+/* Add animation when the section is scrolled into view */
+.service-visible .section-title {
+    animation: fadeInUpWithBlur 1s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide and blur animation */
+@keyframes fadeInUpWithBlur {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+        filter: blur(10px); /* Start with blur */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+        filter: blur(0); /* Remove blur */
+    }
+}
+
+/* Service Item */
+.service-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;  /* Full width of the viewport */
+    box-sizing: border-box;  /* Ensures padding & border are included in the width */
+    background-color: transparent;
+    border-top: .5px solid var(--gray-color);  /* Apply top border to all items */
+}
+
+/* Add animation when the section is scrolled into view */
+.service-visible .service-item {
+    animation: fadeInUp 1.2s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide animation */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+    }
+}
+
+/* Initial state of the about section elements */
+.service-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Remove bottom border for the first two items */
+.services-section .service-item:nth-child(-n+2) {
+    border-bottom: none; /* Remove bottom border for the first two items */
+}
+
+/* Add bottom border only to the last service item */
+.services-section .service-item:last-child {
+    border-bottom: .5px solid var(--gray-color); /* Apply bottom border to the last item */
+    margin-bottom: 8rem;
+}
+
+.service-item:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Service Content */
+.service-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 1300px;  /* Constrained content width */
+    height: 0%;
+    width: 100%;
+    margin: 0 auto;  /* Center content horizontally */
+    padding: 2rem 2rem; 
+}
+
+.service-number {
+    font-family: "Questrial", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--gray-color);
+    margin-right: 20px;
+    transition: color 0.3s ease, color 0.3s ease;
+}
+
+.service-item:hover .service-number {
+    color: var(--light-color);
+}
+
+.service-title {
+    position: relative; /* Set the service-title as the relative parent */
+    font-family: "Questrial", sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--dark-color);
+    transition: color 0.3s ease, color 0.3s ease;
+}
+
+.service-item:hover .service-title {
+    color: var(--light-color);
+}
+
+.service-plus {
+    position: absolute; /* Absolutely position it within the service-title */
+    top: -18px; /* Align to the top */
+    right: 0; /* Align to the right */
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--dark-color);
+    transition: color 0.3s ease, color 0.3s ease;
+}
+
+.service-item:hover .service-plus {
+    color: var(--light-color);
+}
+
+/* Hover effect */
+.service-description {
+    opacity: 0;
+    margin-top: 20px;
+    max-height: 0;
+    max-width: 1100px;
+    font-size: 25px;
+    font-weight: 300;
+    color: var(--text-color);
+    transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(-10px); /* Start description slightly lower */
+    overflow: hidden;
+}
+
+.service-item:hover .service-description {
+    opacity: 1;
+    max-height: 100px; /* Allow space for text to reveal */
+    color: var(--light-color);
+    transform: translateY(0); /* Slide into place */
+}
+
+
+
+
+
+/*---------------------FOOTER---------------------*/
+#contacts {
+    color: var(--light-color);
+}
+
+.footer-container {
+    max-width: 1300px; /* Set your desired max-width */
+    margin: 0 auto; /* Center the content horizontally */
+    padding: 0 2rem; /* Optional padding for smaller screens */
+}
+
+.footer-title {
+    font-family: "Questrial", sans-serif;
+    font-size: 7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-align: left; /* Align the section title to the left */
+    margin: 8rem 0;
+    opacity: 0; /* Start with hidden opacity */
+    transform: translateY(30px); /* Start slightly below */
+    filter: blur(10px); /* Start with blur */
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease; /* Smooth transition */
+}
+
+/* Add animation when the section is scrolled into view */
+.contact-visible .footer-title {
+    animation: fadeInUpWithBlur 1s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide and blur animation */
+@keyframes fadeInUpWithBlur {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+        filter: blur(10px); /* Start with blur */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+        filter: blur(0); /* Remove blur */
+    }
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Add animation when the section is scrolled into view */
+.contact-visible .footer-content {
+    animation: fadeInUp 1.2s ease forwards; /* Apply the fade-in with blur effect */
+}
+
+/* Fade-in with upward slide animation */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px); /* Start slightly below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at the original position */
+    }
+}
+
+/* Initial state of the about section elements */
+.footer-content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+
+.contact-details p {
+    font-size: 22px; /* Adjust this value to your preferred font size */
+    font-weight: 300;
+    margin: 0;
+}
+
+.social-media a {
+    font-size: 32px;
+    margin-right: 20px;
+    color: var(--light-color);
+    transition: color 0.3s;
+}
+
+.social-media a:hover {
+    color: var(--secondary-color);
+}
+
+.footer-separator {
+    margin: 50px 0;
+    border: none;
+    height: 0.5px;
+    background-color: var(--border-color);
+}
+
+.footer-credit {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray-color);
+    margin-bottom: 120px;
+}
+
+
+
+
+
+/*---------------------1280---------------------*/
+
+@media (max-width: 1024px) {
+
+    /* Hero section */
+    .big-text {
+        font-size: 10rem; /* Adjust font size */
+    }
+
+}
+
+/*---------------------1140---------------------*/
+
+@media (max-width: 1140px) {
+
+    /* Hero section */
+    .big-text {
+        font-size: 10rem; /* Adjust font size */
+    }
+}
+
+/*---------------------1024---------------------*/
+
+@media (max-width: 1024px) {
+
+    /* Hero section */
+    .big-text {
+        font-size: 9rem; /* Adjust font size */
+    }
+
+    .footer-credit {
+        margin-bottom: 200px;
+    }
+}
+
+
+
+
+
+/*---------------------912---------------------*/
+
+@media (max-width: 912px) {
+
+    /* Hero section */
+    .big-text {
+        margin-bottom: 2rem;
+        font-size: 15rem; /* Adjust font size */
+        line-height: 190px;
+        transform: translateY(400px);
+        transition: opacity 1s ease, transform 1s ease 0.5s;
+        z-index: 2;
+    }
+
+    /* Big Text Animation */
+    .hero-loaded .big-text {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .big-text .part-two {
+        display: block; /* Force "BALL" to be on a new line */
+    }
+
+    /* Work section */
+    .work-title {
+        margin: 7rem 0;
+        font-size: 7rem; /* Reduce font size for the title */
+    }
+
+    .card {
+        width: 100%; /* Make each card take up the full width of the container */
+        margin-bottom: 2rem; /* Space between stacked cards */
+    }
+    
+    /* Service section */
+    .section-title {
+        margin: 7rem 0;
+        font-size: 7rem; /* Reduce font size for the title */
+    }
+
+    .service-description {
+        max-width: 700px;
+        font-size: 22px;
+    }
+
+    /* Footer */
+    .footer-title {
+        font-size: 7rem; /* Reduce font size for the title */
+    }
+
+    .footer-credit {
+        margin-bottom: 200px;
+    }
+}
+
+
+
+
+
+/*---------------------820---------------------*/
+
+@media (max-width: 820px) {
+
+    /* Navigation Links */
+    .nav-links {
+        right: -400px;
+        width: 400px;
+    }
+
+    /* Show navigation */
+    .nav-open {
+        right: 0;
+    }
+
+    /* Hero section */
+    .big-text {
+        margin-bottom: 2rem;
+        font-size: 13rem; /* Adjust font size */
+        line-height: 170px;
+        transform: translateY(400px);
+        transition: opacity 1s ease, transform 1s ease 0.5s;
+        z-index: 2;
+    }
+
+    /* Big Text Animation */
+    .hero-loaded .big-text {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .big-text .part-two {
+        display: block; /* Force "BALL" to be on a new line */
+    }
+
+    /* Work section */
+    .work-title {
+        margin: 6rem 0;
+        font-size: 6rem; /* Reduce font size for the title */
+    }
+    
+    .card {
+        width: 100%; /* Make each card take up the full width of the container */
+        margin-bottom: 2rem; /* Space between stacked cards */
+    }
+
+    /* Service section */
+    .section-title {
+        margin: 6rem 0;
+        font-size: 7rem; /* Reduce font size for the title */
+    }
+
+    .service-title {
+        font-size: 2rem;
+        letter-spacing: 3px;
+    }
+
+    .service-description {
+        max-width: 650px;
+        font-size: 20px;
+    }
+
+    /* Footer */
+    .footer-title {
+        margin: 9rem 0;
+        font-size: 6rem; /* Reduce font size for the title */
+    }
+}
+
+
+
+
+
+/*---------------------768---------------------*/
+
+@media (max-width: 768px) {
+
+    /* Navigation Links */
+    .nav-links {
+        right: -320px;
+        width: 320px;
+    }
+
+    /* Show navigation */
+    .nav-open {
+        right: 0;
+    }
+
+    /* Hero section */
+    .big-text {
+        margin-bottom: 2rem;
+        font-size: 10rem; /* Adjust font size */
+        line-height: 130px;
+    }
+
+    .big-text .part-two {
+        display: block; /* Force "BALL" to be on a new line */
+    }
+
+    .work-title {
+        margin: 6rem 0;
+        font-size: 5rem; /* Reduce font size for the title */
+    }
+    
+    .card {
+        width: 100%; /* Make each card take up the full width of the container */
+        margin-bottom: 2rem; /* Space between stacked cards */
+    }
+
+    /* Service section */
+    .section-title {
+        margin: 6rem 0;
+        font-size: 5rem; /* Reduce font size for the title */
+    }
+
+    .service-content {
+        padding: 1rem 1rem; 
+    }
+
+    .service-title {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+
+    .service-description {
+        max-width: 600px;
+        font-size: 17px;
+    }
+
+    /* Service section */
+    .footer-title {
+        margin: 6rem 0;
+        font-size: 5rem; /* Reduce font size for the title */
+    }
+
+    .contact-details p {
+        font-size: 20px;
+    }
+}
+
+
+
+
+
+/*---------------------540---------------------*/
+
+@media (max-width: 540px) {
+
+    .toggle-menu {
+        top: 1rem; /* Distance from the top */
+        right: 1rem; /* Distance from the right */
+        width: 50px; /* Set width for circle */
+        height: 50px; /* Set height for circle */
+    }
+    
+    /* Show toggle menu icon */
+    .toggle-menu.visible {
+        transform: translateY(0); /* Slide down to original position */
+        opacity: 1; /* Fade in */
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        right: -270px;
+        width: 270px;
+    }
+
+    /* Show navigation */
+    .nav-open {
+        right: 0;
+    }
+
+    /* Align the nav links text */
+    .nav-links li {
+        margin-bottom: 10px; /* Vertical spacing between each link */
+    }
+
+    /* Link styles */
+    .nav-links a {
+        font-size: 2rem; /* Font size for links */
+        font-weight: 500;
+    }
+
+    /* Hero section */
+    .big-text {
+        margin-bottom: 4rem;
+        font-size: 7rem; /* Adjust font size */
+        line-height: 90px;
+    }
+
+    .big-text .part-two {
+        display: block; /* Force "BALL" to be on a new line */
+    }
+
+    /* About section */
+    .about-container {
+        padding: 0 1rem;
+        height: 600px;
+    }
+
+    .about-wrapper {
+        flex-direction: column; /* Stacks the children vertically */
+        text-align: center; /* Center-align text on smaller screens */
+    }
+
+    .about-left,
+    .about-right {
+        flex: none; /* Ensure the sections no longer take up flexible space */
+        padding-right: 0; /* Remove the right padding */
+    }
+
+    .about-right {
+        font-size: 20px;
+    }
+
+    .about-left {
+        margin-bottom: 35px;
+    }
+
+    /* Work section */
+    .work-section{
+        padding: 0 1rem;
+    }
+
+    .card {
+        width: 100%; /* Make each card take up the full width of the container */
+        border: 1px solid var(--border-color); /* Thin border for the card */
+        margin-bottom: 2rem; /* Space between stacked cards */
+    }
+
+    #arrow-outward {
+        font-size: 1.2rem;
+    }
+
+    .card-container {
+        justify-content: center; /* Center the cards in the container */
+        margin-bottom: 3rem; /* Space between the cards and button */
+    }
+
+    .work-title {
+        margin: 5rem 0;
+        font-size: 4rem; /* Reduce font size for the title */
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+    }
+
+    /* Service section */
+    .section-title {
+        padding: 0 1rem;
+        margin: 5rem 0;
+        font-size: 4rem; /* Reduce font size for the title */
+    } 
+
+    .service-content {
+        padding: 1rem 1rem; 
+    }
+
+    .service-number {
+        font-size: 1.2rem;
+    }
+
+    .service-title {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+
+    .service-plus {
+        top: -15px; /* Align to the top */
+        font-size: 2rem;
+        font-weight: 400;
+    }
+
+    .service-description {
+        max-width: 400px;
+        font-size: 16px;
+    }
+
+    /* Footer */
+    .footer-container {
+        padding: 0 1rem; /* Optional padding for smaller screens */
+    }
+
+    .footer-title {
+        margin: 5rem 0;
+        font-size: 4rem; /* Reduce font size for the title */
+    }
+
+    .footer-content {
+        flex-direction: column; /* Stack contact and social media sections vertically */
+        align-items: flex-start; /* Align items to the left */
+        text-align: left; /* Left-align the text */
+    }
+
+    .contact-details p {
+        font-size: 20px;
+        margin-bottom: 0.7rem; /* Add space between contact details */
+    }
+
+    .footer-credit {
+        margin-bottom: 110px;
+    }
+}
